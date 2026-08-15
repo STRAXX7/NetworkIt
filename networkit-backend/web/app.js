@@ -716,9 +716,9 @@ function openModal(title,desc,extra,btns){
   const d=document.getElementById('modal-msg'); if(d) d.innerHTML=desc;
   const x=document.getElementById('modal-extra'); if(x) x.innerHTML=extra||'';
   const a=document.getElementById('modal-actions'); if(a) a.innerHTML=btns.map(b=>`<button class="${b.c}" onclick="${b.f}">${b.l}</button>`).join('');
-  document.getElementById('modal')?.classList.add('sh');
+  document.getElementById('modal')?.classList.add('show');
 }
-function closeModal(){ document.getElementById('modal')?.classList.remove('sh'); }
+function closeModal(){ document.getElementById('modal')?.classList.remove('show'); }
 function toast(msg,type=''){
   const t=document.getElementById('toast'); if(!t) return;
   t.textContent=msg; t.className='toast'+(type?' '+type:'');
