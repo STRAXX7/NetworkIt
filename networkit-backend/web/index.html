@@ -12,6 +12,7 @@
    NetworkIt — LIGHT PROFESSIONAL DESIGN
    ═══════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+.lucide{width:1em;height:1em;stroke-width:2;vertical-align:-.15em;flex-shrink:0}
 :root{
   --bg:#F8F9FC;
   --white:#FFFFFF;
@@ -870,13 +871,13 @@ input, select, textarea { font-size:16px !important; }
   </div>
   <div class="nav-actions">
     <button class="btn btn-ghost btn-sm" onclick="showPage('login')">Log in</button>
-    <button class="btn btn-ghost btn-sm" id="nav-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" style="padding:7px 10px;font-size:16px">🌙</button>
+    <button class="btn btn-ghost btn-sm" id="nav-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" style="padding:7px 10px;font-size:16px"><i data-lucide="moon"></i></button>
     <button class="btn btn-primary btn-sm" onclick="showPage('register')">Join now</button>
   </div>
   <button class="nav-ham" onclick="toggleMM()"><span></span><span></span><span></span></button>
 </nav>
 <div id="mobile-menu">
-  <button id="mmx" onclick="toggleMM()">✕</button>
+  <button id="mmx" onclick="toggleMM()"><i data-lucide="x"></i></button>
   <a onclick="scrollTo_('features');toggleMM()">Features</a>
   <a onclick="scrollTo_('how');toggleMM()">How it works</a>
   <a onclick="scrollTo_('faq');toggleMM()">FAQ</a>
@@ -888,7 +889,7 @@ input, select, textarea { font-size:16px !important; }
 <div id="page-landing" class="page active">
   <section class="hero">
     <canvas id="hero-canvas"></canvas>
-    <div class="hero-eyebrow">🚀 Connect. Build. Grow.</div>
+    <div class="hero-eyebrow"><i data-lucide="rocket"></i> Connect. Build. Grow.</div>
     <h1>Find the right people<br>to <span>build with.</span></h1>
     <p class="hero-sub">Whether you're in high school, university, or working — find collaborators, co-founders, and mentors who share your goals.</p>
     <div class="hero-ctas">
@@ -908,12 +909,12 @@ input, select, textarea { font-size:16px !important; }
       <h2 class="section-title">Everything you need to find your people</h2>
       <p class="section-sub">Built for students and professionals who want real, meaningful connections in their field.</p>
       <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon">🔍</div><h3>Smart search & filters</h3><p>Filter by field, city, university, goals, and languages. Find exactly who you're looking for.</p></div>
-        <div class="feature-card"><div class="feature-icon">🌍</div><h3>Global & local</h3><p>Connect with people in your city or anywhere in the world. Your reach, your choice.</p></div>
-        <div class="feature-card"><div class="feature-icon">🎯</div><h3>Goal-aligned</h3><p>Looking for a study partner, co-founder, or mentor? Specify your goal and find the right match.</p></div>
-        <div class="feature-card"><div class="feature-icon">💬</div><h3>Built-in messaging</h3><p>Chat directly on NetworkIt. No need to share personal contacts before you're comfortable.</p></div>
-        <div class="feature-card"><div class="feature-icon">🔒</div><h3>Privacy first</h3><p>Your phone number is never shown. Control exactly what appears on your public profile.</p></div>
-        <div class="feature-card"><div class="feature-icon">🎓</div><h3>Student & professional</h3><p>Whether you're a freshman or a seasoned expert, NetworkIt works for you.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="search"></i></div><h3>Smart search & filters</h3><p>Filter by field, city, university, goals, and languages. Find exactly who you're looking for.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="globe"></i></div><h3>Global & local</h3><p>Connect with people in your city or anywhere in the world. Your reach, your choice.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="target"></i></div><h3>Goal-aligned</h3><p>Looking for a study partner, co-founder, or mentor? Specify your goal and find the right match.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="message-circle"></i></div><h3>Built-in messaging</h3><p>Chat directly on NetworkIt. No need to share personal contacts before you're comfortable.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="lock"></i></div><h3>Privacy first</h3><p>Your phone number is never shown. Control exactly what appears on your public profile.</p></div>
+        <div class="feature-card"><div class="feature-icon"><i data-lucide="graduation-cap"></i></div><h3>Student & professional</h3><p>Whether you're a freshman or a seasoned expert, NetworkIt works for you.</p></div>
       </div>
     </div>
   </section>
@@ -953,7 +954,7 @@ input, select, textarea { font-size:16px !important; }
         <div class="footer-col"><h4>Company</h4><a>About</a><a>Blog</a><a>Careers</a></div>
         <div class="footer-col"><h4>Legal</h4><a>Privacy Policy</a><a>Terms of Service</a></div>
       </div>
-      <div class="footer-bottom"><p>© 2025 NetworkIt. All rights reserved.</p><p style="color:#6B7280">Built for curious minds 🌍</p></div>
+      <div class="footer-bottom"><p>© 2025 NetworkIt. All rights reserved.</p><p style="color:#6B7280">Built for curious minds <i data-lucide="globe"></i></p></div>
     </div>
   </footer>
 </div>
@@ -970,7 +971,6 @@ input, select, textarea { font-size:16px !important; }
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
         Continue with Google
       </button>
-      <p class="socbtn-note">Available after deploying with backend</p>
       <div class="auth-div"><span>or continue with email</span></div>
       <div class="fg"><label class="fl">Email</label><input type="email" class="fi" id="li-em" placeholder="you@example.com" autocomplete="email"></div>
       <div class="fg"><label class="fl">Password</label><input type="password" class="fi" id="li-pw" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
@@ -999,20 +999,20 @@ input, select, textarea { font-size:16px !important; }
 
 <!-- ════ APP ════ -->
 <div id="page-app" class="page">
-  <button class="mob-tog" onclick="toggleSB()" style="font-size:20px;line-height:1">☰</button>
+  <button class="mob-tog" onclick="toggleSB()" style="font-size:20px;line-height:1"><i data-lucide="menu"></i></button>
   <div class="sbo" id="sbo" onclick="closeSB()"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sb-logo" onclick="showSec('discover')"><span class="sb-logo-icon">N</span>NetworkIt</div>
     <nav class="sb-nav">
-      <button class="sbl ac" id="sn-discover" onclick="showSec('discover')">🔍 Discover</button>
-      <button class="sbl" id="sn-profile" onclick="showSec('profile')">👤 My profile</button>
-      <button class="sbl" id="sn-messages" onclick="showSec('messages')">💬 Messages<span id="msg-badge" style="display:none;background:var(--blue);color:#fff;font-size:10px;font-weight:700;border-radius:100px;padding:2px 7px;margin-left:auto">0</span></button>
-      <button class="sbl" id="sn-saved" onclick="showSec('saved')">🔖 Saved profiles</button>
-      <button class="sbl" id="sn-notifications" onclick="showSec('notifications')">🔔 Notifications<span id="notif-badge" style="display:none;background:#DC2626;color:#fff;font-size:10px;font-weight:700;border-radius:100px;padding:2px 7px;margin-left:auto">0</span></button>
-      <button class="sbl" id="sn-settings" onclick="showSec('settings')">⚙️ Settings</button>
-      <button class="sbl" id="sn-admin" style="display:none" onclick="showSec('admin')">🛡️ Admin panel</button>
-      <button class="sbl" id="theme-toggle" onclick="toggleTheme()" style="margin-top:4px">🌙 Dark mode</button>
-      <button class="sbl red" onclick="doLogout()">🚪 Log out</button>
+      <button class="sbl ac" id="sn-discover" onclick="showSec('discover')"><i data-lucide="search"></i> Discover</button>
+      <button class="sbl" id="sn-profile" onclick="showSec('profile')"><i data-lucide="user"></i> My profile</button>
+      <button class="sbl" id="sn-messages" onclick="showSec('messages')"><i data-lucide="message-circle"></i> Messages<span id="msg-badge" style="display:none;background:var(--blue);color:#fff;font-size:10px;font-weight:700;border-radius:100px;padding:2px 7px;margin-left:auto">0</span></button>
+      <button class="sbl" id="sn-saved" onclick="showSec('saved')"><i data-lucide="bookmark"></i> Saved profiles</button>
+      <button class="sbl" id="sn-notifications" onclick="showSec('notifications')"><i data-lucide="bell"></i> Notifications<span id="notif-badge" style="display:none;background:#DC2626;color:#fff;font-size:10px;font-weight:700;border-radius:100px;padding:2px 7px;margin-left:auto">0</span></button>
+      <button class="sbl" id="sn-settings" onclick="showSec('settings')"><i data-lucide="settings"></i> Settings</button>
+      <button class="sbl" id="sn-admin" style="display:none" onclick="showSec('admin')"><i data-lucide="shield"></i> Admin panel</button>
+      <button class="sbl" id="theme-toggle" onclick="toggleTheme()" style="margin-top:4px"><i data-lucide="moon"></i> Dark mode</button>
+      <button class="sbl red" onclick="doLogout()"><i data-lucide="log-out"></i> Log out</button>
     </nav>
     <div class="sb-user" onclick="showSec('profile')">
       <div class="sbav" id="sb-av">?</div>
@@ -1023,8 +1023,8 @@ input, select, textarea { font-size:16px !important; }
 
     <!-- DISCOVER -->
     <div id="sec-discover" class="sec sh">
-      <div class="ah"><h1>Discover people</h1><button class="btn btn-ghost btn-sm" id="filter-toggle" onclick="toggleFilters()" style="display:none">⚙️ Filters</button>
-        <div class="sbar" style="position:relative"><span style="color:var(--text4)">🔍</span><input type="text" placeholder="Name, field, university…" id="qs" oninput="debSearch()" onfocus="showSearchHistory()" onblur="setTimeout(hideSearchHistory,200)" autocomplete="off"><div class="search-history" id="search-history-dropdown"></div></div>
+      <div class="ah"><h1>Discover people</h1><button class="btn btn-ghost btn-sm" id="filter-toggle" onclick="toggleFilters()" style="display:none"><i data-lucide="settings"></i> Filters</button>
+        <div class="sbar" style="position:relative"><span style="color:var(--text4)"><i data-lucide="search"></i></span><input type="text" placeholder="Name, field, university…" id="qs" oninput="debSearch()" onfocus="showSearchHistory()" onblur="setTimeout(hideSearchHistory,200)" autocomplete="off"><div class="search-history" id="search-history-dropdown"></div></div>
       </div>
       <div class="fp">
         <div><label class="fl">Country</label><select class="fi" id="f-co" onchange="runSearch()"><option value="">All countries</option></select></div>
@@ -1042,26 +1042,26 @@ input, select, textarea { font-size:16px !important; }
 
     <!-- VIEW PROFILE -->
     <div id="sec-vp" class="sec">
-      <div class="ah"><button class="btn btn-ghost btn-sm" onclick="showSec('discover')">← Back</button></div>
+      <div class="ah"><button class="btn btn-ghost btn-sm" onclick="showSec('discover')"><i data-lucide="chevron-left"></i> Back</button></div>
       <div id="vp-cont"></div>
     </div>
 
     <!-- MY PROFILE -->
     <div id="sec-profile" class="sec">
-      <div class="ah"><h1>My profile</h1><div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="exportProfilePDF()">📄 Export PDF</button><button class="btn btn-ghost btn-sm" onclick="shareMyProfile()">🔗 Share profile</button><button class="btn btn-primary btn-sm" onclick="showSec('edit-profile')">Edit profile</button></div></div>
+      <div class="ah"><h1>My profile</h1><div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="exportProfilePDF()"><i data-lucide="file-text"></i> Export PDF</button><button class="btn btn-ghost btn-sm" onclick="shareMyProfile()"><i data-lucide="link"></i> Share profile</button><button class="btn btn-primary btn-sm" onclick="showSec('edit-profile')">Edit profile</button></div></div>
       <div id="mp-cont"></div>
     </div>
 
     <!-- EDIT PROFILE -->
     <div id="sec-edit-profile" class="sec">
-      <div class="ah"><h1>Edit profile</h1><button class="btn btn-ghost btn-sm" onclick="showSec('profile')">← Back</button></div>
+      <div class="ah"><h1>Edit profile</h1><button class="btn btn-ghost btn-sm" onclick="showSec('profile')"><i data-lucide="chevron-left"></i> Back</button></div>
       <div style="max-width:600px">
         <div class="psec" style="margin-bottom:16px">
           <h3>Profile picture</h3>
           <div style="display:flex;align-items:center;gap:16px;margin-top:10px">
             <div style="position:relative;cursor:pointer;width:72px;height:72px;flex-shrink:0" onclick="document.getElementById('av-inp').click()">
               <div class="phav" id="ep-av" style="width:72px;height:72px;font-size:22px"></div>
-              <div style="position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:16px">📷</div>
+              <div style="position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff"><i data-lucide="camera"></i></div>
             </div>
             <input type="file" id="av-inp" style="display:none" accept="image/*" onchange="uploadAv(event)">
             <div><p style="font-size:13px;color:var(--text3);margin-bottom:7px">Click to upload. Max 5 MB.</p><button class="btn btn-ghost btn-sm" onclick="removeAv()">Remove photo</button></div>
@@ -1097,11 +1097,11 @@ input, select, textarea { font-size:16px !important; }
       <div class="ah"><h1>Settings</h1></div>
       <div class="s-layout">
         <div class="s-nav">
-          <button class="sni ac" onclick="showStab('acc',this)">👤 Account</button>
-          <button class="sni" onclick="showStab('prv',this)">🔒 Privacy</button>
-          <button class="sni" onclick="showStab('sec',this)">🛡️ Security</button>
+          <button class="sni ac" onclick="showStab('acc',this)"><i data-lucide="user"></i> Account</button>
+          <button class="sni" onclick="showStab('prv',this)"><i data-lucide="lock"></i> Privacy</button>
+          <button class="sni" onclick="showStab('sec',this)"><i data-lucide="shield"></i> Security</button>
           <div style="height:1px;background:var(--border);margin:5px 4px"></div>
-          <button class="sni red" onclick="showStab('del',this)">⚠️ Danger</button>
+          <button class="sni red" onclick="showStab('del',this)"><i data-lucide="alert-triangle"></i> Danger</button>
         </div>
         <div class="s-cont">
           <div id="st-acc">
@@ -1157,7 +1157,7 @@ input, select, textarea { font-size:16px !important; }
       <div class="card" style="padding:20px;margin-bottom:16px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
           <h3 style="font-size:16px;font-weight:700">Users</h3>
-          <div class="sbar" style="max-width:200px"><span style="color:var(--text4)">🔍</span><input type="text" placeholder="Search…" id="adm-q" oninput="loadAdmUsers()"></div>
+          <div class="sbar" style="max-width:200px"><span style="color:var(--text4)"><i data-lucide="search"></i></span><input type="text" placeholder="Search…" id="adm-q" oninput="loadAdmUsers()"></div>
         </div>
         <div style="overflow-x:auto"><table class="at"><thead><tr><th>User</th><th>Field</th><th>Country</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="adm-tbody"></tbody></table></div>
       </div>
@@ -1173,15 +1173,15 @@ input, select, textarea { font-size:16px !important; }
       <div id="messages-layout" style="display:grid;grid-template-columns:268px 1fr;height:calc(100vh - 140px);min-height:480px;background:var(--white);border:1px solid var(--border);border-radius:var(--r-2xl);overflow:hidden;box-shadow:var(--shadow-sm)">
         <div id="conv-list" style="border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden">
           <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
-            <div class="sbar" style="max-width:100%;box-shadow:none"><span style="color:var(--text4)">🔍</span><input type="text" id="conv-search" placeholder="Search conversations…" oninput="filterConvs()"></div>
+            <div class="sbar" style="max-width:100%;box-shadow:none"><span style="color:var(--text4)"><i data-lucide="search"></i></span><input type="text" id="conv-search" placeholder="Search conversations…" oninput="filterConvs()"></div>
           </div>
           <div id="conv-items" style="flex:1;overflow-y:auto"></div>
         </div>
         <div id="chat-window" style="display:flex;flex-direction:column;overflow:hidden">
           <div id="chat-empty" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:var(--text4)">
-            <div style="width:56px;height:56px;border-radius:50%;background:var(--blue-lt);border:1px solid var(--blue-lt2);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px">💬</div>
+            <div style="width:56px;height:56px;border-radius:50%;background:var(--blue-lt);border:1px solid var(--blue-lt2);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;color:var(--blue)"><i data-lucide="message-circle"></i></div>
             <h3 style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:7px">Your messages</h3>
-            <p style="font-size:14px;max-width:220px">Go to Discover and click 💬 on someone's card to start a conversation.</p>
+            <p style="font-size:14px;max-width:220px">Go to Discover and click <i data-lucide="message-circle" style="width:.9em;height:.9em"></i> on someone's card to start a conversation.</p>
           </div>
           <div id="chat-active" style="display:none;flex-direction:column;height:100%">
             <div id="chat-header" style="padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px;flex-shrink:0;background:var(--bg)">
@@ -1192,7 +1192,7 @@ input, select, textarea { font-size:16px !important; }
             <div id="chat-messages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:7px"></div>
             <div style="padding:12px 14px;border-top:1px solid var(--border);display:flex;gap:9px;align-items:flex-end;flex-shrink:0;background:var(--white)">
               <textarea id="chat-input" placeholder="Type a message…" rows="1" style="flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:10px 13px;color:var(--text);font-size:14px;font-family:var(--font-b);outline:none;resize:none;max-height:100px;overflow-y:auto;transition:border-color .18s" onkeydown="chatKeyDown(event)" oninput="autoResizeTA(this)" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-              <button onclick="sendMessage()" style="background:var(--blue);border:none;color:#fff;border-radius:var(--r);width:40px;height:40px;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .18s;box-shadow:0 1px 3px rgba(79,70,229,.3)" onmouseover="this.style.background='var(--blue2)'" onmouseout="this.style.background='var(--blue)'">➤</button>
+              <button onclick="sendMessage()" style="background:var(--blue);border:none;color:#fff;border-radius:var(--r);width:40px;height:40px;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .18s;box-shadow:0 1px 3px rgba(79,70,229,.3)" onmouseover="this.style.background='var(--blue2)'" onmouseout="this.style.background='var(--blue)'"><i data-lucide="send"></i></button>
             </div>
           </div>
         </div>
@@ -1220,6 +1220,7 @@ input, select, textarea { font-size:16px !important; }
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@1.17.0/dist/umd/lucide.min.js"></script>
 <script src="config.js"></script>
 <script src="app.js"></script>
 </body>

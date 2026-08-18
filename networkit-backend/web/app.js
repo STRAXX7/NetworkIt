@@ -22,6 +22,20 @@ if (!_cfg.SUPABASE_URL || _cfg.SUPABASE_URL.includes("YOUR-PROJECT-REF")) {
 const sb = window.supabase.createClient(_cfg.SUPABASE_URL, _cfg.SUPABASE_ANON_KEY);
 
 // ─────────────────────────────────────────────
+// ICONS (Lucide) — every emoji in this app was replaced with an
+// <i data-lucide="name"></i> placeholder (in index.html's static
+// markup and in the template strings below). Rather than remembering
+// to call lucide.createIcons() at the end of every render function
+// that might emit one, a MutationObserver watches the whole document
+// and converts any new placeholders as soon as they land in the DOM.
+// createIcons() is idempotent (confirmed: re-running it on an
+// already-converted icon is a no-op), so this can't loop.
+// ─────────────────────────────────────────────
+if (window.lucide) {
+  new MutationObserver(() => lucide.createIcons()).observe(document.documentElement, { childList: true, subtree: true });
+}
+
+// ─────────────────────────────────────────────
 // STATE
 // ─────────────────────────────────────────────
 let SESSION = null;        // Supabase auth session
@@ -165,7 +179,7 @@ async function doLogin(){
   }
   const pwInp=document.getElementById('li-pw'); if(pwInp) pwInp.value='';
   await loadSavedIds();
-  showPage('app'); toast('Welcome back, '+ME.fn+'! 👋','ok');
+  showPage('app'); toast('Welcome back, '+ME.fn+'!','ok');
 }
 async function doLogout(){
   await sb.auth.signOut();
@@ -191,7 +205,7 @@ async function sendReset(){
 const SNMS=['Basic info','Location','Education','Interests','Languages','About','Goals','Contact'];
 const INTS=['Business','Economics','Finance','Law','Medicine','Computer Science','Engineering','Psychology','Marketing','Design','Entrepreneurship','Artificial Intelligence','Mathematics','Physics','Biology','Chemistry','History','Philosophy','Sociology','Political Science','Architecture','Music','Literature','Neuroscience','Biotechnology'];
 const LAS=['English','Spanish','French','German','Arabic','Russian','Chinese','Japanese','Portuguese','Italian','Korean','Turkish','Hindi','Dutch','Polish','Swedish','Norwegian','Danish','Ukrainian','Uzbek','Persian','Thai','Vietnamese','Indonesian','Yoruba','Swahili','Bengali'];
-const GLS=[{i:'👫',l:'Looking for friends'},{i:'📚',l:'Study partners'},{i:'🤝',l:'Networking'},{i:'🚀',l:'Startup co-founders'},{i:'🎓',l:'Mentorship'},{i:'🔬',l:'Research collaboration'},{i:'💼',l:'Internship opportunities'},{i:'📈',l:'Career networking'}];
+const GLS=[{i:'users',l:'Looking for friends'},{i:'book-open',l:'Study partners'},{i:'share-2',l:'Networking'},{i:'rocket',l:'Startup co-founders'},{i:'graduation-cap',l:'Mentorship'},{i:'microscope',l:'Research collaboration'},{i:'briefcase',l:'Internship opportunities'},{i:'trending-up',l:'Career networking'}];
 const CTRS=['Afghanistan','Albania','Algeria','Argentina','Armenia','Australia','Austria','Azerbaijan','Bangladesh','Belarus','Belgium','Brazil','Canada','Chile','China','Colombia','Croatia','Czech Republic','Denmark','Egypt','Finland','France','Georgia','Germany','Ghana','Greece','Hungary','India','Indonesia','Iran','Ireland','Palestine','Italy','Japan','Kazakhstan','Kenya','South Korea','Malaysia','Mexico','Morocco','Netherlands','New Zealand','Nigeria','Norway','Pakistan','Peru','Philippines','Poland','Portugal','Romania','Russia','Saudi Arabia','Serbia','Singapore','Spain','Sweden','Switzerland','Turkey','Ukraine','United Arab Emirates','United Kingdom','United States','Uzbekistan','Vietnam'];
 let RS=1, RD={};
 function initReg(){ RS=1; RD={}; renderReg(); }
@@ -209,15 +223,15 @@ function renderReg(){
   c.classList.remove('fin'); void c.offsetWidth; c.classList.add('fin');
 }
 function buildReg(s){
-  const back=s>1?`<button class="btn btn-ghost btn-sm" onclick="rBack()">← Back</button>`:`<button class="btn btn-ghost btn-sm" onclick="showPage('landing')">← Home</button>`;
-  const next=s<8?`<button class="btn btn-primary" onclick="rNext()">Continue →</button>`:`<button class="btn btn-primary" onclick="rFinish()">Create account 🎉</button>`;
+  const back=s>1?`<button class="btn btn-ghost btn-sm" onclick="rBack()"><i data-lucide="chevron-left"></i> Back</button>`:`<button class="btn btn-ghost btn-sm" onclick="showPage('landing')"><i data-lucide="chevron-left"></i> Home</button>`;
+  const next=s<8?`<button class="btn btn-primary" onclick="rNext()">Continue <i data-lucide="chevron-right"></i></button>`:`<button class="btn btn-primary" onclick="rFinish()"><i data-lucide="party-popper"></i> Create account</button>`;
   const nav=`<div class="rnav">${back}${next}</div>`;
-  if(s===1)return`<h2 style="font-size:22px;font-weight:700;margin-bottom:7px">Basic information</h2><p style="font-size:14px;color:var(--text3);margin-bottom:24px">Tell us a little about yourself.</p>
+  if(s===1)return`<h2 style="font-size:22px;font-weight:700;margin-bottom:7px">Basic information</h2><p style="font-size:14px;color:var(--text3);margin-bottom:24px">${SESSION?'Signed in as '+SESSION.user.email+' — just a few more details.':'Tell us a little about yourself.'}</p>
     <div id="rerr" class="amsg err"></div>
     <div class="frow"><div class="fg"><label class="fl">First name *</label><input class="fi" id="r-fn" type="text" placeholder="Jane" value="${RD.fn||''}"></div><div class="fg"><label class="fl">Last name *</label><input class="fi" id="r-ln" type="text" placeholder="Doe" value="${RD.ln||''}"></div></div>
     <div class="fg"><label class="fl">Username *</label><input class="fi" id="r-un" type="text" placeholder="janedoe99" value="${RD.un||''}"></div>
-    <div class="fg"><label class="fl">Email *</label><input class="fi" id="r-em" type="email" placeholder="you@example.com" value="${RD.em||''}"></div>
-    <div class="fg"><label class="fl">Password *</label><input class="fi" id="r-pw" type="password" placeholder="At least 8 characters" oninput="pwdStr(this)"><div class="pb" id="pbar"></div><div class="plb" id="plbl"></div></div>
+    ${SESSION?'':`<div class="fg"><label class="fl">Email *</label><input class="fi" id="r-em" type="email" placeholder="you@example.com" value="${RD.em||''}"></div>
+    <div class="fg"><label class="fl">Password *</label><input class="fi" id="r-pw" type="password" placeholder="At least 8 characters" oninput="pwdStr(this)"><div class="pb" id="pbar"></div><div class="plb" id="plbl"></div></div>`}
     <div class="fg"><label class="fl">Date of birth *</label><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><input class="fi" id="r-dob-d" type="number" placeholder="Day" min="1" max="31" style="text-align:center"><input class="fi" id="r-dob-m" type="number" placeholder="Month" min="1" max="12" style="text-align:center"><input class="fi" id="r-dob-y" type="number" placeholder="Year" min="1950" max="2015" style="text-align:center"></div><div class="fhint">Day &middot; Month &middot; Year</div></div>
     <div class="fg"><label class="fl">Gender <span style="color:var(--text3)">(optional)</span></label><div class="rg" id="r-gen">${['Male','Female','Non-binary','Prefer not to say'].map(g=>`<div class="rb${RD.gen===g?' sel':''}" onclick="selR(this,'r-gen')">${g}</div>`).join('')}</div></div>
     ${nav}`;
@@ -242,11 +256,11 @@ function buildReg(s){
   if(s===6)return`<h2 style="font-size:22px;font-weight:700;margin-bottom:7px">About you</h2><p style="font-size:14px;color:var(--text3);margin-bottom:24px">Write a short bio. The first thing people see.</p>
     <div class="fg"><label class="fl">Bio (max 300 characters)</label><textarea class="fi" id="r-bio" maxlength="300" rows="5" placeholder="Tell others who you are, what you study, and what you're passionate about…" oninput="document.getElementById('bcnt').textContent=this.value.length+'/300'">${RD.bio||''}</textarea><div class="ccnt" id="bcnt">${(RD.bio||'').length}/300</div></div>${nav}`;
   if(s===7)return`<h2 style="font-size:22px;font-weight:700;margin-bottom:7px">What are your goals?</h2><p style="font-size:14px;color:var(--text3);margin-bottom:24px">Select everything that applies.</p>
-    <div style="display:flex;flex-direction:column;gap:9px" id="r-gl">${GLS.map(g=>`<div class="gchip${(RD.gl||[]).includes(g.l)?' sel':''}" onclick="this.classList.toggle('sel')"><span style="font-size:17px">${g.i}</span>${g.l}</div>`).join('')}</div>${nav}`;
+    <div style="display:flex;flex-direction:column;gap:9px" id="r-gl">${GLS.map(g=>`<div class="gchip${(RD.gl||[]).includes(g.l)?' sel':''}" onclick="this.classList.toggle('sel')"><i data-lucide="${g.i}" style="width:17px;height:17px"></i>${g.l}</div>`).join('')}</div>${nav}`;
   if(s===8)return`<h2 style="font-size:22px;font-weight:700;margin-bottom:7px">Contact details</h2>
     <p style="font-size:14px;color:var(--text3);margin-bottom:24px">Your phone number is private and only for verification. Optional links appear as buttons on your profile.</p>
     <div id="rerr" class="amsg err"></div>
-    <div class="fg"><label class="fl">Phone number *</label><input class="fi" id="r-ph" type="tel" placeholder="+1 555 000 0000" value="${RD.ph||''}"><div class="fhint">🔒 Never shown publicly</div></div>
+    <div class="fg"><label class="fl">Phone number *</label><input class="fi" id="r-ph" type="tel" placeholder="+1 555 000 0000" value="${RD.ph||''}"><div class="fhint"><i data-lucide="lock"></i> Never shown publicly</div></div>
     <div style="height:1px;background:var(--border);margin:18px 0"></div>
     <div class="frow"><div class="fg"><label class="fl">Telegram</label><input class="fi" id="r-tg" placeholder="@username" value="${RD.tg||''}"></div><div class="fg"><label class="fl">Instagram</label><input class="fi" id="r-ig" placeholder="@username" value="${RD.ig||''}"></div></div>
     <div class="frow"><div class="fg"><label class="fl">WhatsApp</label><input class="fi" id="r-wa" placeholder="+1 555 000 0000" value="${RD.wa||''}"></div><div class="fg"><label class="fl">LinkedIn</label><input class="fi" id="r-li" placeholder="linkedin.com/in/…" value="${RD.li||''}"></div></div>
@@ -261,13 +275,16 @@ async function collectR(s){
   const chips=cid=>[...document.querySelectorAll('#'+cid+' .sel')].map(e=>e.textContent.trim());
   const E=(msg)=>{ if(err){ err.textContent=msg; err.style.display='block'; } return false; };
   if(s===1){
-    RD.fn=v('r-fn'); RD.ln=v('r-ln'); RD.un=v('r-un'); RD.em=v('r-em'); RD.pw=v('r-pw'); RD.gen=selR2('r-gen');
+    RD.fn=v('r-fn'); RD.ln=v('r-ln'); RD.un=v('r-un'); RD.gen=selR2('r-gen');
+    if(SESSION){ RD.em=SESSION.user.email; } else { RD.em=v('r-em'); RD.pw=v('r-pw'); }
     const _dd=v('r-dob-d'), _dm=v('r-dob-m'), _dy=v('r-dob-y');
     RD.dob=(_dy&&_dm&&_dd)?_dy+'-'+String(_dm).padStart(2,'0')+'-'+String(_dd).padStart(2,'0'):'';
-    if(!RD.fn||!RD.ln||!RD.un||!RD.em||!RD.pw) return E('Please fill in all required fields');
+    if(!RD.fn||!RD.ln||!RD.un||(!SESSION&&(!RD.em||!RD.pw))) return E('Please fill in all required fields');
     if(!RD.dob) return E('Please enter your date of birth (Day / Month / Year)');
-    if(RD.pw.length<8) return E('Password must be at least 8 characters');
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(RD.em)) return E('Please enter a valid email');
+    if(!SESSION){
+      if(RD.pw.length<8) return E('Password must be at least 8 characters');
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(RD.em)) return E('Please enter a valid email');
+    }
     const { data: available, error } = await sb.rpc('is_username_available', { p_username: RD.un });
     if(!error && available===false) return E('This username is already taken');
   }
@@ -286,19 +303,27 @@ async function rFinish(){
   if(!(await collectR(RS))) return;
   const err=document.getElementById('rerr');
   const showErr=m=>{ if(err){ err.textContent=m; err.style.display='block'; } };
-  const { data, error } = await sb.auth.signUp({ email: RD.em, password: RD.pw });
-  if(error){
-    RS=1; renderReg();
-    return showErr(/registered/i.test(error.message) ? 'An account with this email already exists' : error.message);
+  let userId;
+  if(SESSION){
+    // Already authenticated (e.g. first-time "Continue with Google") — the
+    // auth.users row exists, we're just finishing the profile, not signing up.
+    userId = SESSION.user.id;
+  } else {
+    const { data, error } = await sb.auth.signUp({ email: RD.em, password: RD.pw });
+    if(error){
+      RS=1; renderReg();
+      return showErr(/registered/i.test(error.message) ? 'An account with this email already exists' : error.message);
+    }
+    if(!data.session){
+      toast('Almost done — check your email to confirm your account, then log in.','ok');
+      showPage('login');
+      return;
+    }
+    SESSION = data.session;
+    userId = data.user.id;
   }
-  if(!data.session){
-    toast('Almost done — check your email to confirm your account, then log in.','ok');
-    showPage('login');
-    return;
-  }
-  SESSION = data.session;
   const payload = {
-    id: data.user.id, username: RD.un, first_name: RD.fn, last_name: RD.ln,
+    id: userId, username: RD.un, first_name: RD.fn, last_name: RD.ln,
     date_of_birth: RD.dob||null, gender: RD.gen||null,
     country: RD.co, region: RD.rg||null, city: RD.ci,
     status: RD.st||null, school: RD.sc||null, university: RD.uni||null,
@@ -314,7 +339,7 @@ async function rFinish(){
   }
   await loadMyProfile();
   await loadSavedIds();
-  toast('Welcome to NetworkIt, '+ME.fn+'! 🎉','ok');
+  toast('Welcome to NetworkIt, '+ME.fn+'!','ok');
   showPage('app');
 }
 
@@ -394,13 +419,13 @@ async function runSearch(){
   grid.innerHTML = users.map((u,i)=>`
     <div class="rc fin" style="animation-delay:${i*.04}s">
       <div class="rch"><div class="rcav" style="background:${ac(u.id)}">${ah(u)}</div><div><div class="rcn">${u.fn} ${u.ln}</div><div class="rcf">${u.fi||''}</div></div></div>
-      ${u.ci?`<div class="rclc">📍 ${u.ci}${u.co?', '+u.co:''}${u.st?' · '+u.st:''}</div>`:''}
+      ${u.ci?`<div class="rclc"><i data-lucide="map-pin"></i> ${u.ci}${u.co?', '+u.co:''}${u.st?' · '+u.st:''}</div>`:''}
       <div class="rcb">${u.bio||'No bio yet.'}</div>
       <div class="rcts">${(u.int||[]).slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
       <div style="display:flex;gap:7px">
         <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center" onclick="viewProfile('${u.un}')">View profile</button>
-        <button class="btn btn-primary btn-sm" onclick="startChat('${u.id}')" title="Message">💬</button>
-        <button class="bookmark-btn${isSaved(u.id)?' saved':''}" data-uid="${u.id}" onclick="toggleSave(this.dataset.uid,this)" style="padding:6px 10px;border-radius:var(--r);border:1.5px solid var(--border);background:none;cursor:pointer;font-size:15px" title="Save">🔖</button>
+        <button class="btn btn-primary btn-sm" onclick="startChat('${u.id}')" title="Message"><i data-lucide="message-circle"></i></button>
+        <button class="bookmark-btn${isSaved(u.id)?' saved':''}" data-uid="${u.id}" onclick="toggleSave(this.dataset.uid,this)" style="padding:6px 10px;border-radius:var(--r);border:1.5px solid var(--border);background:none;cursor:pointer;font-size:15px" title="Save"><i data-lucide="bookmark"></i></button>
       </div>
     </div>`).join('');
   const pgn=document.getElementById('pgn');
@@ -417,7 +442,7 @@ function debSearch(){
 function toggleFilters(){
   const fp=document.querySelector('.fp'); if(!fp) return;
   fp.classList.toggle('mobile-open');
-  const btn=document.getElementById('filter-toggle'); if(btn) btn.textContent = fp.classList.contains('mobile-open') ? '✕ Close' : '⚙️ Filters';
+  const btn=document.getElementById('filter-toggle'); if(btn) btn.innerHTML = fp.classList.contains('mobile-open') ? '<i data-lucide="x"></i> Close' : '<i data-lucide="settings"></i> Filters';
 }
 
 // ═══════ PROFILE VIEW ═══════
@@ -429,11 +454,11 @@ async function viewProfile(username){
   const u = mapProfilePage(row);
   const col = ac(u.id);
   const socs=[
-    u.tg?`<a class="slk" href="https://t.me/${u.tg.replace('@','')}" target="_blank">✈️ Telegram</a>`:'',
-    u.ig?`<a class="slk" href="https://instagram.com/${u.ig.replace('@','')}" target="_blank">📸 Instagram</a>`:'',
-    u.wa?`<a class="slk" href="https://wa.me/${u.wa.replace(/\D/g,'')}" target="_blank">💬 WhatsApp</a>`:'',
-    u.li?`<a class="slk" href="https://${u.li.replace('https://','')}" target="_blank">💼 LinkedIn</a>`:'',
-    u.emp?`<a class="slk" href="mailto:${u.emp}">📧 Email</a>`:'',
+    u.tg?`<a class="slk" href="https://t.me/${u.tg.replace('@','')}" target="_blank"><i data-lucide="send"></i> Telegram</a>`:'',
+    u.ig?`<a class="slk" href="https://instagram.com/${u.ig.replace('@','')}" target="_blank"><i data-lucide="camera"></i> Instagram</a>`:'',
+    u.wa?`<a class="slk" href="https://wa.me/${u.wa.replace(/\D/g,'')}" target="_blank"><i data-lucide="message-circle"></i> WhatsApp</a>`:'',
+    u.li?`<a class="slk" href="https://${u.li.replace('https://','')}" target="_blank"><i data-lucide="briefcase"></i> LinkedIn</a>`:'',
+    u.emp?`<a class="slk" href="mailto:${u.emp}"><i data-lucide="mail"></i> Email</a>`:'',
   ].filter(Boolean).join('');
   const cont=document.getElementById('vp-cont'); if(!cont) return;
   cont.innerHTML = `
@@ -444,10 +469,10 @@ async function viewProfile(username){
           <h1>${u.fn} ${u.ln}</h1>
           <div class="phun">@${u.un}</div>
           <div class="phm">
-            ${u.ci?`<div class="phmi">📍 ${u.ci}${u.co?', '+u.co:''}</div>`:''}
-            ${u.fi?`<div class="phmi">🎓 ${u.fi}</div>`:''}
-            ${u.uni?`<div class="phmi">🏫 ${u.uni}</div>`:''}
-            ${u.jd?`<div class="phmi">📅 Joined ${u.jd}</div>`:''}
+            ${u.ci?`<div class="phmi"><i data-lucide="map-pin"></i> ${u.ci}${u.co?', '+u.co:''}</div>`:''}
+            ${u.fi?`<div class="phmi"><i data-lucide="graduation-cap"></i> ${u.fi}</div>`:''}
+            ${u.uni?`<div class="phmi"><i data-lucide="building"></i> ${u.uni}</div>`:''}
+            ${u.jd?`<div class="phmi"><i data-lucide="calendar"></i> Joined ${u.jd}</div>`:''}
           </div>
           ${socs?`<div class="slks">${socs}</div>`:''}
         </div>
@@ -455,12 +480,12 @@ async function viewProfile(username){
     </div>
     <div class="pbody">
       <div>
-        ${u.bio?`<div class="psec"><h3>✍️ About</h3><p class="pbio">${u.bio}</p></div>`:''}
-        ${(u.gl||[]).length?`<div class="psec"><h3>🎯 Goals</h3><div class="rcts">${u.gl.map(g=>`<span class="tag">${g}</span>`).join('')}</div></div>`:''}
-        ${(u.int||[]).length?`<div class="psec"><h3>💡 Interests</h3><div class="rcts">${u.int.map(i=>`<span class="tag">${i}</span>`).join('')}</div></div>`:''}
+        ${u.bio?`<div class="psec"><h3><i data-lucide="pencil"></i> About</h3><p class="pbio">${u.bio}</p></div>`:''}
+        ${(u.gl||[]).length?`<div class="psec"><h3><i data-lucide="target"></i> Goals</h3><div class="rcts">${u.gl.map(g=>`<span class="tag">${g}</span>`).join('')}</div></div>`:''}
+        ${(u.int||[]).length?`<div class="psec"><h3><i data-lucide="lightbulb"></i> Interests</h3><div class="rcts">${u.int.map(i=>`<span class="tag">${i}</span>`).join('')}</div></div>`:''}
       </div>
       <div>
-        <div class="psec"><h3>📋 Details</h3>
+        <div class="psec"><h3><i data-lucide="clipboard-list"></i> Details</h3>
           <table class="dt">
             ${u.st?`<tr><td>Status</td><td>${u.st}</td></tr>`:''}
             ${u.yr?`<tr><td>Year</td><td>${u.yr}</td></tr>`:''}
@@ -468,11 +493,11 @@ async function viewProfile(username){
             ${u.co?`<tr><td>Country</td><td>${u.co}</td></tr>`:''}
           </table>
         </div>
-        ${(u.la||[]).length?`<div class="psec"><h3>🌐 Languages</h3><div class="rcts">${u.la.map(l=>`<span class="tag">${l}</span>`).join('')}</div></div>`:''}
+        ${(u.la||[]).length?`<div class="psec"><h3><i data-lucide="languages"></i> Languages</h3><div class="rcts">${u.la.map(l=>`<span class="tag">${l}</span>`).join('')}</div></div>`:''}
         <div class="psec">
-          <h3>⚑ Report</h3>
+          <h3><i data-lucide="flag"></i> Report</h3>
           <p style="font-size:13px;margin-bottom:9px">If this profile violates our guidelines.</p>
-          <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;margin-bottom:8px" onclick="startChat('${u.id}')">💬 Send message</button>
+          <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;margin-bottom:8px" onclick="startChat('${u.id}')"><i data-lucide="message-circle"></i> Send message</button>
           <button class="btn btn-ghost btn-sm" onclick="reportUser('${u.id}')">Report this profile</button>
         </div>
       </div>
@@ -499,11 +524,11 @@ function renderMyProfile(){
   const prv = MY_PRIVACY || { loc:true,uni:true,soc:true,jd:true };
   const col=ac(m.id);
   const socs=[
-    m.tg?`<span class="slk">✈️ ${m.tg}</span>`:'',
-    m.ig?`<span class="slk">📸 ${m.ig}</span>`:'',
-    m.wa?`<span class="slk">💬 ${m.wa}</span>`:'',
-    m.li?`<span class="slk">💼 LinkedIn</span>`:'',
-    m.emp?`<span class="slk">📧 ${m.emp}</span>`:'',
+    m.tg?`<span class="slk"><i data-lucide="send"></i> ${m.tg}</span>`:'',
+    m.ig?`<span class="slk"><i data-lucide="camera"></i> ${m.ig}</span>`:'',
+    m.wa?`<span class="slk"><i data-lucide="message-circle"></i> ${m.wa}</span>`:'',
+    m.li?`<span class="slk"><i data-lucide="briefcase"></i> LinkedIn</span>`:'',
+    m.emp?`<span class="slk"><i data-lucide="mail"></i> ${m.emp}</span>`:'',
   ].filter(Boolean).join('');
   const cont=document.getElementById('mp-cont'); if(!cont) return;
   cont.innerHTML = `
@@ -514,10 +539,10 @@ function renderMyProfile(){
           <h1>${m.fn} ${m.ln}</h1>
           <div class="phun">@${m.un}</div>
           <div class="phm">
-            ${prv.loc&&m.ci?`<div class="phmi">📍 ${m.ci}${m.co?', '+m.co:''}</div>`:''}
-            ${m.fi?`<div class="phmi">🎓 ${m.fi}</div>`:''}
-            ${prv.uni&&m.uni?`<div class="phmi">🏫 ${m.uni}</div>`:''}
-            ${prv.jd&&m.jd?`<div class="phmi">📅 Joined ${m.jd}</div>`:''}
+            ${prv.loc&&m.ci?`<div class="phmi"><i data-lucide="map-pin"></i> ${m.ci}${m.co?', '+m.co:''}</div>`:''}
+            ${m.fi?`<div class="phmi"><i data-lucide="graduation-cap"></i> ${m.fi}</div>`:''}
+            ${prv.uni&&m.uni?`<div class="phmi"><i data-lucide="building"></i> ${m.uni}</div>`:''}
+            ${prv.jd&&m.jd?`<div class="phmi"><i data-lucide="calendar"></i> Joined ${m.jd}</div>`:''}
           </div>
           ${prv.soc&&socs?`<div class="slks">${socs}</div>`:'<p style="font-size:12px;color:var(--text3);margin-top:7px">Social links hidden by privacy settings</p>'}
         </div>
@@ -525,12 +550,12 @@ function renderMyProfile(){
     </div>
     <div class="pbody">
       <div>
-        <div class="psec"><h3>✍️ About</h3><p class="pbio">${m.bio||'<span style="color:var(--text3)">No bio yet. <a onclick="showSec(\'edit-profile\')">Add one →</a></span>'}</p></div>
-        ${(m.gl||[]).length?`<div class="psec"><h3>🎯 Goals</h3><div class="rcts">${m.gl.map(g=>`<span class="tag">${g}</span>`).join('')}</div></div>`:''}
-        ${(m.int||[]).length?`<div class="psec"><h3>💡 Interests</h3><div class="rcts">${m.int.map(i=>`<span class="tag">${i}</span>`).join('')}</div></div>`:''}
+        <div class="psec"><h3><i data-lucide="pencil"></i> About</h3><p class="pbio">${m.bio||'<span style="color:var(--text3)">No bio yet. <a onclick="showSec(\'edit-profile\')">Add one <i data-lucide="chevron-right"></i></a></span>'}</p></div>
+        ${(m.gl||[]).length?`<div class="psec"><h3><i data-lucide="target"></i> Goals</h3><div class="rcts">${m.gl.map(g=>`<span class="tag">${g}</span>`).join('')}</div></div>`:''}
+        ${(m.int||[]).length?`<div class="psec"><h3><i data-lucide="lightbulb"></i> Interests</h3><div class="rcts">${m.int.map(i=>`<span class="tag">${i}</span>`).join('')}</div></div>`:''}
       </div>
       <div>
-        <div class="psec"><h3>📋 Details</h3>
+        <div class="psec"><h3><i data-lucide="clipboard-list"></i> Details</h3>
           <table class="dt">
             ${m.st?`<tr><td>Status</td><td>${m.st}</td></tr>`:''}
             ${m.yr?`<tr><td>Year</td><td>${m.yr}</td></tr>`:''}
@@ -539,7 +564,7 @@ function renderMyProfile(){
             ${m.jd?`<tr><td>Joined</td><td>${m.jd}</td></tr>`:''}
           </table>
         </div>
-        ${(m.la||[]).length?`<div class="psec"><h3>🌐 Languages</h3><div class="rcts">${m.la.map(l=>`<span class="tag">${l}</span>`).join('')}</div></div>`:''}
+        ${(m.la||[]).length?`<div class="psec"><h3><i data-lucide="languages"></i> Languages</h3><div class="rcts">${m.la.map(l=>`<span class="tag">${l}</span>`).join('')}</div></div>`:''}
         <div class="psec"><p style="font-size:12px;color:var(--text3)">Some fields may be hidden. Manage in <a onclick="showSec('settings');showStab('prv',document.querySelector('.sni'))">Privacy settings</a>.</p></div>
       </div>
     </div>`;
@@ -568,7 +593,7 @@ async function uploadAv(evt){
   if(updErr){ toast('Could not save photo','err'); return; }
   ME.av=url;
   popEP(); updSBav(); renderMyProfile();
-  toast('Photo updated ✓','ok');
+  toast('Photo updated','ok');
 }
 async function removeAv(){
   const m=me(); if(!m) return;
@@ -597,7 +622,7 @@ async function saveProfile(){
   if(error){ toast(error.code==='23505' ? 'Username already taken' : 'Could not save profile','err'); return; }
   await loadMyProfile();
   const sbn=document.getElementById('sb-nm'); if(sbn) sbn.textContent=ME.fn+' '+ME.ln;
-  renderMyProfile(); toast('Profile saved ✓','ok'); showSec('profile');
+  renderMyProfile(); toast('Profile saved','ok'); showSec('profile');
 }
 
 // ═══════ SETTINGS ═══════
@@ -631,7 +656,7 @@ async function saveStAcc(){
   const sbn=document.getElementById('sb-nm'); if(sbn) sbn.textContent=ME.fn+' '+ME.ln;
   const sbr=document.getElementById('sb-rl'); if(sbr) sbr.textContent=ME.st||'Member';
   popEP(); renderMyProfile();
-  setMsg('st-acc-msg','Saved ✓','ok');
+  setMsg('st-acc-msg','Saved','ok');
 }
 function loadPrivToggles(){
   const p = MY_PRIVACY || { loc:true,uni:true,soc:true,srch:true,jd:true };
@@ -645,7 +670,7 @@ async function savePrivacy(){
   const { error } = await sb.from('privacy_settings').update(payload).eq('profile_id', SESSION.user.id);
   if(error){ toast('Could not save privacy settings','err'); return; }
   MY_PRIVACY = { loc:payload.show_location, uni:payload.show_university, soc:payload.show_socials, srch:payload.show_in_search, jd:payload.show_join_date };
-  toast('Privacy saved ✓','ok');
+  toast('Privacy saved','ok');
 }
 function pwdStr(inp, barId, lblId){
   barId = barId || 'pbar'; lblId = lblId || 'plbl';
@@ -673,7 +698,7 @@ async function changePass(){
   const { error } = await sb.auth.updateUser({ password:np });
   if(error) return setMsg('st-pw-msg', error.message,'err');
   ['st-op','st-np','st-cp'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  setMsg('st-pw-msg','Password updated ✓','ok');
+  setMsg('st-pw-msg','Password updated','ok');
 }
 async function changeEmail(){
   const m=me(); if(!m) return;
@@ -686,7 +711,7 @@ async function changeEmail(){
   const { error } = await sb.auth.updateUser({ email:ne });
   if(error) return setMsg('st-em-msg', /registered/i.test(error.message) ? 'Email already in use' : error.message,'err');
   ['st-ne','st-ep'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  setMsg('st-em-msg','Confirmation link sent to your new email address ✓','ok');
+  setMsg('st-em-msg','Confirmation link sent to your new email address','ok');
 }
 function confirmDeleteAcc(){
   openModal('Delete account','This will permanently delete your profile and all your data. Type DELETE to confirm.',
@@ -739,7 +764,7 @@ async function toggleSave(userId, btn){
     if(error){ toast('Could not save profile','err'); return; }
     SAVED_IDS.add(userId);
     if(btn){ btn.classList.add('saved'); btn.title='Saved!'; }
-    toast('Profile saved! 🔖','ok');
+    toast('Profile saved!','ok');
   }
   const secSaved=document.getElementById('sec-saved');
   if(secSaved && secSaved.classList.contains('sh')) renderSaved();
@@ -748,7 +773,7 @@ async function renderSaved(){
   const el=document.getElementById('saved-list'); if(!el) return;
   const { data, error } = await sb.from('saved_profiles').select('saved_profile_id, created_at').eq('user_id', SESSION.user.id).order('created_at',{ascending:false});
   if(error || !data || !data.length){
-    el.innerHTML='<div class="empty"><div style="font-size:36px;margin-bottom:12px">🔖</div><h3>No saved profiles yet</h3><p style="color:var(--text4)">Click the bookmark icon on any profile to save it here.</p></div>';
+    el.innerHTML='<div class="empty"><div style="font-size:36px;margin-bottom:12px;color:var(--text4)"><i data-lucide="bookmark"></i></div><h3>No saved profiles yet</h3><p style="color:var(--text4)">Click the bookmark icon on any profile to save it here.</p></div>';
     return;
   }
   const ids=data.map(r=>r.saved_profile_id);
@@ -759,14 +784,14 @@ async function renderSaved(){
       <div class="rch">
         <div class="rcav" style="background:${ac(u.id)}">${ah(u)}</div>
         <div><div class="rcn">${u.fn} ${u.ln}</div><div class="rcf">${u.fi||''}</div></div>
-        <button class="bookmark-btn saved" data-uid="${u.id}" onclick="toggleSave(this.dataset.uid,this)" title="Remove">🔖</button>
+        <button class="bookmark-btn saved" data-uid="${u.id}" onclick="toggleSave(this.dataset.uid,this)" title="Remove"><i data-lucide="bookmark"></i></button>
       </div>
-      ${u.ci?`<div class="rclc">📍 ${u.ci}${u.co?', '+u.co:''}</div>`:''}
+      ${u.ci?`<div class="rclc"><i data-lucide="map-pin"></i> ${u.ci}${u.co?', '+u.co:''}</div>`:''}
       <div class="rcb">${u.bio||'No bio yet.'}</div>
       <div class="rcts">${(u.int||[]).slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center" data-uid="${u.id}" onclick="viewProfile('${u.un}')">View profile</button>
-        <button class="btn btn-primary btn-sm" data-uid="${u.id}" onclick="startChat('${u.id}')" title="Message">💬</button>
+        <button class="btn btn-primary btn-sm" data-uid="${u.id}" onclick="startChat('${u.id}')" title="Message"><i data-lucide="message-circle"></i></button>
       </div>
     </div>`).join('') + '</div>';
 }
@@ -854,7 +879,7 @@ async function renderMessages(){
   const { data, error } = await sb.from('messages').select('*').eq('conversation_id', activeConvId).order('created_at',{ascending:true});
   if(error){ console.error(error); return; }
   const msgs=data||[]; const meId=SESSION.user.id;
-  if(!msgs.length){ el.innerHTML='<div style="text-align:center;color:var(--slate);font-size:13px;margin:auto">No messages yet. Say hello! 👋</div>'; return; }
+  if(!msgs.length){ el.innerHTML='<div style="text-align:center;color:var(--slate);font-size:13px;margin:auto">No messages yet. Say hello!</div>'; return; }
   let lastDate='';
   el.innerHTML = msgs.map(m=>{
     const isMine=m.sender_id===meId;
@@ -862,7 +887,7 @@ async function renderMessages(){
     const divider = d!==lastDate ? `<div class="msg-day">${d}</div>` : '';
     lastDate=d;
     const time=new Date(m.created_at).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-    const ticks = isMine ? (m.seen_at?'<span class="tick-seen">✓✓</span>':'<span class="tick-sent">✓</span>') : '';
+    const ticks = isMine ? (m.seen_at?'<span class="tick-seen"><i data-lucide="check-check"></i></span>':'<span class="tick-sent"><i data-lucide="check"></i></span>') : '';
     return divider+`<div class="msg-bubble ${isMine?'mine':'theirs'}">${escapeHTML(m.body)}<div class="msg-meta"><span class="msg-time">${time}</span>${ticks}</div></div>`;
   }).join('');
   el.scrollTop=el.scrollHeight;
@@ -930,7 +955,7 @@ function showSearchHistory(){
   const hist=getSearchHistory(); const dd=document.getElementById('search-history-dropdown'); if(!dd) return;
   if(!hist.length){ dd.classList.remove('show'); return; }
   dd.innerHTML='<div class="sh-header"><span>Recent searches</span><span style="cursor:pointer" onclick="clearSearchHistory()">Clear all</span></div>'+
-    hist.map(q=>`<div class="sh-item" onclick="applySearchHistory('${q.replace(/'/g,"\\'")}')"><span class="sh-icon">🕐</span><span>${q}</span><span class="sh-clear" onclick="event.stopPropagation();removeSearchHistoryItem('${q.replace(/'/g,"\\'")}')">✕</span></div>`).join('');
+    hist.map(q=>`<div class="sh-item" onclick="applySearchHistory('${q.replace(/'/g,"\\'")}')"><span class="sh-icon"><i data-lucide="clock"></i></span><span>${q}</span><span class="sh-clear" onclick="event.stopPropagation();removeSearchHistoryItem('${q.replace(/'/g,"\\'")}')"><i data-lucide="x"></i></span></div>`).join('');
   dd.classList.add('show');
 }
 function hideSearchHistory(){ document.getElementById('search-history-dropdown')?.classList.remove('show'); }
@@ -940,7 +965,7 @@ function clearSearchHistory(){ localStorage.setItem('nklocal_search_history_'+(S
 // ═══════ SHARE / EXPORT (pure client-side, no backend needed) ═══════
 function shareProfile(username){
   const link = window.location.origin + window.location.pathname + '?profile=' + (username||'');
-  if(navigator.clipboard?.writeText) navigator.clipboard.writeText(link).then(()=>toast('Profile link copied! 🔗','ok')).catch(()=>prompt('Copy this link:', link));
+  if(navigator.clipboard?.writeText) navigator.clipboard.writeText(link).then(()=>toast('Profile link copied!','ok')).catch(()=>prompt('Copy this link:', link));
   else prompt('Copy this link:', link);
 }
 function shareMyProfile(){ const m=me(); if(m) shareProfile(m.un); }
@@ -982,15 +1007,15 @@ function toggleTheme(){
   const isDark=document.body.classList.toggle('dark');
   localStorage.setItem('nk_theme', isDark?'dark':'light');
   const sbtn=document.getElementById('theme-toggle'); const nbtn=document.getElementById('nav-theme-btn');
-  if(sbtn) sbtn.innerHTML = isDark?'☀️ Light mode':'🌙 Dark mode';
-  if(nbtn) nbtn.textContent = isDark?'☀️':'🌙';
+  if(sbtn) sbtn.innerHTML = isDark?'<i data-lucide="sun"></i> Light mode':'<i data-lucide="moon"></i> Dark mode';
+  if(nbtn) nbtn.innerHTML = isDark?'<i data-lucide="sun"></i>':'<i data-lucide="moon"></i>';
 }
 function applyTheme(){
   if(localStorage.getItem('nk_theme')==='dark'){
     document.body.classList.add('dark');
     const sbtn=document.getElementById('theme-toggle'); const nbtn=document.getElementById('nav-theme-btn');
-    if(sbtn) sbtn.innerHTML='☀️ Light mode';
-    if(nbtn) nbtn.textContent='☀️';
+    if(sbtn) sbtn.innerHTML='<i data-lucide="sun"></i> Light mode';
+    if(nbtn) nbtn.innerHTML='<i data-lucide="sun"></i>';
   }
 }
 (function(){ if(localStorage.getItem('nk_theme')==='dark') document.body.classList.add('dark'); })();
@@ -1019,6 +1044,7 @@ function initCanvas(){
 
 // ═══════ INIT ═══════
 document.addEventListener('DOMContentLoaded', async () => {
+  if (window.lucide) lucide.createIcons(); // convert icons already in the initial HTML
   applyTheme();
   initCanvas();
   renderLanding();
@@ -1031,6 +1057,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadMyProfile();
     if(ME && ME.ban){ await sb.auth.signOut(); SESSION=null; ME=null; showPage('landing'); return; }
     if(ME){ showPage('app'); return; }
+    // Authenticated but no profile row yet — e.g. first-ever "Continue with
+    // Google". Send them to finish registration instead of stranding them
+    // signed-in on the marketing landing page.
+    showPage('register');
+    return;
   }
   showPage('landing');
 
